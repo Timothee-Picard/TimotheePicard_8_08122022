@@ -3,6 +3,7 @@ import ErrorPage from "./ErrorPage.js"
 import LoadingPage from "./LoadingPage.js"
 
 import Actions from './Actions.js'
+import {formatDate} from "../app/format.js";
 
 const row = (bill) => {
   return (`
@@ -20,7 +21,11 @@ const row = (bill) => {
   }
 
 const rows = (data) => {
-  return (data && data.length) ? data.map(bill => row(bill)).join("") : ""
+    const sortArray = data.sort((a, b) => new Date(b.date) - new Date(a.date))
+    sortArray.forEach((e) => {
+        e.date = formatDate(e.date)
+    })
+  return (data && data.length) ? sortArray.map(bill => row(bill)).join("") : ""
 }
 
 export default ({ data: bills, loading, error }) => {
