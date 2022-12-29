@@ -20,6 +20,7 @@ export default class NewBill {
     const file = this.document.querySelector(`input[data-testid="file"]`).files[0]
     const filePath = e.target.value.split(/\\/g)
     const fileName = filePath[filePath.length-1]
+    console.log(fileName)
     const formData = new FormData()
     const email = JSON.parse(localStorage.getItem("user")).email
     formData.append('file', file)
@@ -42,7 +43,12 @@ export default class NewBill {
   }
   handleSubmit = e => {
     e.preventDefault()
-    console.log('e.target.querySelector(`input[data-testid="datepicker"]`).value', e.target.querySelector(`input[data-testid="datepicker"]`).value)
+    if (this.fileName.split(".").pop() !== "jpg" &&
+        this.fileName.split(".").pop() !== "jpeg" &&
+        this.fileName.split(".").pop() !== "png") {
+      window.alert("Format de fichier incorrect")
+      return
+    }
     const email = JSON.parse(localStorage.getItem("user")).email
     const bill = {
       email,
